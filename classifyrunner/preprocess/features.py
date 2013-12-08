@@ -53,6 +53,7 @@ def _psd(signal):
     signal -- time series of a signal
     """
     return mlab.psd(signal)
+# PSD is een functie zeker, wat nemen we avg, max?
 
 def _fourierdomain_peak(signal):
     """Index and value of the highest peak in the fourier domain of a signal."""
