@@ -1,13 +1,15 @@
+import numpy as np
+import matplotlib.mlab as mlab
 import classifyrunner.accproc as ap
 
-def _avg_acceleration(A):
-    """Average the acceleration meassurements
+def _acceleration_avg_std(A):
+    """Calculate average and standard deviation for acceleration meassurements
 
     A -- data.Ax (e.g.)
 
     source: HowToExtractPeaks.html
     """
-    return np.mean(A.values)
+    return np.mean(A.values), np.std(A.values)
 
 def _peak_avg_std(ym):
     """Calculate the average and standard deviation for the peak accelerations
@@ -43,6 +45,20 @@ def _steptime_avg_std(peaks):
     source: HowToExtractPeaks.html
     """
     return np.mean(_getStepTimes(peaks)), np.std(_getStepTimes(peaks))
+
+def _psd(signal):
+    """Calculate PSD by Welch's average periodogram method (matplotlib)
+
+    Keyword arguments:
+    signal -- time series of a signal
+    """
+    return mlab.psd(signal)
+
+def _fourierdomain_peak(signal):
+    """Index and value of the highest peak in the fourier domain of a signal."""
+    fft = np.fft(signal)
+    peak_index = np.argsort(fft)[-1]
+    return peak_index, fft[peak_index]
 
 def derive(runnerfile):
     """Derive a number of features from triaxial accelerometer measurements.
