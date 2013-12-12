@@ -1,4 +1,6 @@
 import numpy as np
+import scipy as sp
+import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 import classifyrunner.accproc as ap
 
@@ -44,16 +46,18 @@ def _steptime_avg_std(peaks):
 
     source: HowToExtractPeaks.html
     """
-    return np.mean(_getStepTimes(peaks)), np.std(_getStepTimes(peaks))
+    steptimpes = _getStepTimes(peaks)
+    return np.mean(steptimes), np.std(steptimes)
 
-def _psd(signal):
-    """Calculate PSD by Welch's average periodogram method (matplotlib)
+def _max_psd(signal):
+    """Index and value of the maximum PSD value (psd from matplotlib)
 
     Keyword arguments:
     signal -- time series of a signal
     """
-    return mlab.psd(signal)
-# PSD is een functie zeker, wat nemen we avg, max?
+    psd = mlab.psd(signal)
+    max_index = np.argsort(psd)[-1]
+    return max_index, psd[max_index]
 
 def _fourierdomain_peak(signal):
     """Index and value of the highest peak in the fourier domain of a signal."""
@@ -61,7 +65,7 @@ def _fourierdomain_peak(signal):
     peak_index = np.argsort(fft)[-1]
     return peak_index, fft[peak_index]
 
-def derive(runnerfile):
+def derive(runnerfile, nb_windows=1, window_size=256, window_shift=1):
     """Derive a number of features from triaxial accelerometer measurements.
 
     Requires a csv file that can be read by readGCDCFormat() as defined in
@@ -72,7 +76,25 @@ def derive(runnerfile):
     """
     data = ap.preprocessGCDC(ap.readGCDCFormat(runnerfile))
     # Filter data (beginning, end; speed up,down) and limit length of series
+    Ay = data['Ay'].values
+    ymax = np.max(Ay)
+    frac = 0.2
+    for index, val in enumerate(Ay):
+        if val > frac*ymax:
+            beginning = index
+            break
+    for index, val in reversed(list(enumerate(Ay))):
+        if val > frac*ymax:
+            ending = index
+            break
+    print data
+    data = data[beginning:ending]
+    print data
+    data.Ax.plot()
+    plt.show()
 
+if __name__ == "__main__":
+    derive("data/Runs/Ann/enkel/DATA-005.CSV")
 ###Ax_max = ap.detectPeaksGCDC(data,
 ###                            columnname="Ax",
 ###                            detection={'delta':0.7},
