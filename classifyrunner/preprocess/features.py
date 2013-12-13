@@ -3,6 +3,7 @@ import scipy as sp
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 import classifyrunner.accproc as ap
+import operator
 
 def _acceleration_avg_std(A):
     """Calculate average and standard deviation for acceleration meassurements
@@ -65,6 +66,70 @@ def _fourierdomain_peak(signal):
     peak_index = np.argsort(fft)[-1]
     return peak_index, fft[peak_index]
 
+def _enumerate_reversed(L):
+    """Equivalent to: reversed(list(enumerate(L))), but avoids copying L"""
+    for index in reversed(xrange(len(L))):
+        yield index, L[index]
+
+def _filter_single_series(series, fraction=0.2, characteristic=np.max,
+                            cmp=operator.lt):
+    """Returns two indices that would filter the series in a slice operation.
+
+    Returns the first and last index where the value of the series
+    satifies 'cmp' with regard to a 'fraction' of the 'characteristic'
+    applied to the series, e.g.:
+        cmp(fraction*characteristic(series), valueofseries)
+
+    Keyword arguments:
+    series -- the series to filter
+    fraction -- fraction of the characteristic the value of the
+                series must satisfy
+                default: 20%
+    characteristic -- a function that characterises a series as something that
+                        can be 'cmp'ed to a value of the series
+                        default: np.max
+    cmp -- a comparison function
+            default: operator.lt (python's function form of '<')
+    """
+    beginning = 0
+    ending = len(series)
+    criterion = fraction * characteristic(series)
+    for index, val in enumerate(series):
+        if cmp(criterion,val):
+            beginning = index
+            break
+    for index, val in _enumerate_reversed(series):
+        if cmp(criterion,val):
+            ending = index
+            break
+    return beginning, ending
+
+def _filter_series(*series, **kwargs):
+    """Smallest and largest index that would filter each of the series.
+    
+    Keyword arguments:
+    accepts the same keyword arguments as _filter_single_series
+    defaults:
+        fraction = 0.2
+        characteristic = np.max
+        cmp = operator.lt
+    """
+    fraction = kwargs.pop('fraction', 0.2)
+    characteristic = kwargs.pop('characteristic', np.max)
+    cmp = kwargs.pop('cmp', operator.lt)
+
+    beginnings = []
+    endings = []
+    for single_series in series:
+        b, e = _filter_single_series(single_series,
+                                        fraction,
+                                        characteristic,
+                                        cmp)
+        beginning.append(b)
+        ending.append(e)
+    return np.max(beginnings), np.min(endings)
+
+
 def derive(runnerfile, nb_windows=1, window_size=256, window_shift=1):
     """Derive a number of features from triaxial accelerometer measurements.
 
@@ -77,16 +142,7 @@ def derive(runnerfile, nb_windows=1, window_size=256, window_shift=1):
     data = ap.preprocessGCDC(ap.readGCDCFormat(runnerfile))
     # Filter data (beginning, end; speed up,down) and limit length of series
     Ay = data['Ay'].values
-    ymax = np.max(Ay)
-    frac = 0.2
-    for index, val in enumerate(Ay):
-        if val > frac*ymax:
-            beginning = index
-            break
-    for index, val in reversed(list(enumerate(Ay))):
-        if val > frac*ymax:
-            ending = index
-            break
+    beginning, ending = _filter_single_series(Ay)
     print data
     data = data[beginning:ending]
     print data
