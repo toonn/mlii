@@ -15,8 +15,8 @@ def _acceleration_avg_std(data, columname):
 def _detect_peaks(data, columname):
     A_peaks = 0
     A_peaks = ap.detectPeaksGCDC(data, columnname=columname,
-                                detection={'lookahead':20},
-                                smooth={'type':'butter'},plot=True,verbose=True)
+                                detection={'lookahead':20})
+                                #smooth={'type':'butter'},plot=True,verbose=True)
     return A_peaks
 
 def _peak_avg_std(data, columname):
@@ -146,6 +146,7 @@ def _filter_series(*series, **kwargs):
         if e-b < min_length:
             min_length = e-b
         trimmed_series.append(single_series[b:e])
+    print 'min_length: ', min_length
     return [eq_len_trim_ser[:min_length] for eq_len_trim_ser in trimmed_series]
 
 def extract_features(data):
