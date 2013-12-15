@@ -4,6 +4,9 @@ import csv
 import numpy as np
 from sklearn import preprocessing
 
+runners = ['Ann', 'Annick', 'Emmy', 'Floor', 'Hanne',
+            'Jolien', 'Laura', 'Mara', 'Nina', 'Sofie',
+            'Tina', 'Tinne', 'Vreni', 'Yllia']
 trained = ['n', 'y']
 surface = ['Woodchip', 'Asphalt', 'Track']
 
@@ -24,8 +27,10 @@ def load_data(root, nb_windows=1, window_size=256, window_shift=1):
                 r = run(root, runner, nb, nb_windows=nb_windows,
                         window_size=window_size, window_shift=window_shift)
                 runs[runner][nb] = r
+                print '.'
             except IOError:
-                print 'Not loading: {runner}-{nb}'.format(runner=runner, nb=nb)
+                print 'x' # Who needs a helpful warning anyway.
+                #print 'Not loading: {runner}-{nb}'.format(runner=runner, nb=nb)
     return runs
 
 def load_classes(metadata):
@@ -42,6 +47,7 @@ def load_classes(metadata):
 def load_scaled_ankle(datadictionary, metadictionary):
     ankle_data = []
     ankle_meta = []
+    ankle_labels = []
     nb_windows = len(datadictionary
                         .itervalues().next()
                         .itervalues().next()
@@ -51,6 +57,7 @@ def load_scaled_ankle(datadictionary, metadictionary):
         ankle_meta.append([[],[]])
     for runner in datadictionary.iterkeys():
         for nb in datadictionary[runner].iterkeys():
+            ankle_labels.append(runners.index(runner))
             for index, window in enumerate(datadictionary[runner][nb].ankle):
                 ankle_data[index].append(window)
                 ankle_meta[index][0].append(
@@ -60,11 +67,13 @@ def load_scaled_ankle(datadictionary, metadictionary):
     ankle_data = np.asfarray([preprocessing.scale(unscaled)
                                 for unscaled in np.asfarray(ankle_data)])
     ankle_meta = np.asarray(ankle_meta)
-    return ankle_data, ankle_meta
+    ankle_labels = [ankle_labels for i in xrange(len(ankle_meta))]
+    return ankle_data, ankle_meta, ankle_labels
 
 def load_scaled_hip(datadictionary, metadictionary):
     hip_data = []
     hip_meta = []
+    hip_labels = []
     nb_windows = len(datadictionary
                         .itervalues().next()
                         .itervalues().next()
@@ -74,6 +83,7 @@ def load_scaled_hip(datadictionary, metadictionary):
         hip_meta.append([[],[]])
     for runner in datadictionary.iterkeys():
         for nb in datadictionary[runner].iterkeys():
+            hip_labels.append(runners.index(runner))
             for index, window in enumerate(datadictionary[runner][nb].hip):
                 hip_data[index].append(window)
                 hip_meta[index][0].append(
@@ -83,11 +93,13 @@ def load_scaled_hip(datadictionary, metadictionary):
     hip_data = np.asfarray([preprocessing.scale(unscaled)
                                 for unscaled in np.asfarray(hip_data)])
     hip_meta = np.asarray(hip_meta)
-    return hip_data, hip_meta
+    hip_labels = [hip_labels for i in xrange(len(hip_meta))]
+    return hip_data, hip_meta, hip_labels
 
 def load_scaled_anklehip(datadictionary, metadictionary):
     anklehip_data = []
     anklehip_meta = []
+    anklehip_labels = []
     nb_windows = len(datadictionary
                         .itervalues().next()
                         .itervalues().next()
@@ -97,6 +109,7 @@ def load_scaled_anklehip(datadictionary, metadictionary):
         anklehip_meta.append([[],[]])
     for runner in datadictionary.iterkeys():
         for nb in datadictionary[runner].iterkeys():
+            anklehip_labels.append(runners.index(runner))
             for index, window in enumerate(datadictionary[runner][nb].anklehip):
                 anklehip_data[index].append(window)
                 anklehip_meta[index][0].append(
@@ -106,5 +119,6 @@ def load_scaled_anklehip(datadictionary, metadictionary):
     anklehip_data = np.asfarray([preprocessing.scale(unscaled)
                                 for unscaled in np.asfarray(anklehip_data)])
     anklehip_meta = np.asarray(anklehip_meta)
-    return anklehip_data, anklehip_meta
+    anklehip_labels = [anklehip_labels for i in xrange(len(anklehip_meta))]
+    return anklehip_data, anklehip_meta, anklehip_labels
 

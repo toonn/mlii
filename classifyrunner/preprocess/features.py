@@ -66,7 +66,10 @@ def _max_psd(data, columname):
     """Frequency and value of the maximum PSD value (psd from matplotlib) """
     signal = data[columname].values
     packed_Pxx, freqs = mlab.psd(signal)
-    Pxx = [val for row in packed_Pxx for val in row]
+    if len(packed_Pxx.shape) == 2:
+        Pxx = [val for row in packed_Pxx for val in row]
+    else:
+        Pxx = packed_Pxx
     max_index = np.argsort(Pxx)[-1]
     return freqs[max_index], Pxx[max_index]
 
