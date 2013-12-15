@@ -19,7 +19,17 @@ class run(object):
         csv = 'DATA-{nb}.CSV'.format(nb=number.rjust(3,'0'))
         anklecsv = os.path.join(root, name, 'enkel', csv)
         hipcsv = os.path.join(root, name, 'heup', csv)
-        self.ankle = features.derive(anklecsv)
-        self.hip = features.derive(hipcsv)
-        self.anklehip = features.derive(anklecsv, hipcsv)
+        self.ankle = features.derive(anklecsv,
+                                    nb_windows=nb_windows,
+                                    window_size=window_size,
+                                    window_shift=window_shift)
+        self.hip = features.derive(hipcsv,
+                                    nb_windows=nb_windows,
+                                    window_size=window_size,
+                                    window_shift=window_shift)
+        self.anklehip = features.derive(anklecsv,
+                                        hipcsv,
+                                        nb_windows=nb_windows,
+                                        window_size=window_size,
+                                        window_shift=window_shift)
 
