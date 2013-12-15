@@ -13,10 +13,22 @@ def _acceleration_avg_std(data, columname):
     return np.mean(data[columname].values), np.std(data[columname].values)
 
 def _detect_peaks(data, columname):
+    """Helper function to call accproc detectPeaksGCDC.
+
+    detectPeaksGCDC is very fragile when working on short series because
+    peakdetect returns an empty list of positive peaks.
+    A solution would be to do peakdetection on the original data and then
+    select those peaks in the same interval as the window on which we work now.
+    """
     A_peaks = 0
     A_peaks = ap.detectPeaksGCDC(data, columnname=columname,
-                                detection={'lookahead':20})
-                                #smooth={'type':'butter'},plot=True,verbose=True)
+                                detection={'lookahead': 20,
+                                            'delta': 0.1},
+                                smooth={'type':'butter'},
+                                plot=False,
+                                verbose=False)
+        # delta > 0.1 Causes peakdetect in accproc not to find any
+        # positive peaks
     return A_peaks
 
 def _peak_avg_std(data, columname):
