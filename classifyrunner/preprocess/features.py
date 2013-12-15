@@ -23,11 +23,11 @@ def _detect_peaks(data, columname):
     A_peaks = 0
     A_peaks = ap.detectPeaksGCDC(data, columnname=columname,
                                 detection={'lookahead': 20,
-                                            'delta': 0.1},
+                                            'delta': 0},
                                 smooth={'type':'butter'},
                                 plot=False,
                                 verbose=False)
-        # delta > 0.1 Causes peakdetect in accproc not to find any
+        # delta > 0 Causes peakdetect in accproc not to find any
         # positive peaks
     return A_peaks
 
@@ -158,7 +158,10 @@ def _filter_series(*series, **kwargs):
         if e-b < min_length:
             min_length = e-b
         trimmed_series.append(single_series[b:e])
-    print 'min_length: ', min_length
+    #print 'min_length: ', min_length
+    #ugly code, specific to nb_windows, window_size and window_shift
+    if min_length < 256:
+        raise (IOError, 'Too little useful data in runner\'s csv.')
     return [eq_len_trim_ser[:min_length] for eq_len_trim_ser in trimmed_series]
 
 def extract_features(data):
