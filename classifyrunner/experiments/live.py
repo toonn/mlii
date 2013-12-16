@@ -88,57 +88,48 @@ with open('live_classification_experiment.txt','w') as f:
         print >>f, 'Decision Tree'
         res = dt.predict(test1X)
         for index, label in enumerate(test1L):
-            print >>f, runners[label], ': ', trained[res[index][0]],
-            surface[res[index][1]]
+            print >>f, runners[label], ': ', trained[int(res[index][0])], surface[int(res[index][1])]
         print >>f, 'SVM'
         res1 = sv1.predict(test1X)
         res2 = sv2.predict(test1X)
         res = zip(res1,res2)
         for index, label in enumerate(test1L):
-            print >>f, runners[label], ': ', trained[res[index][0]],
-            surface[res[index][1]]
+            print >>f, runners[label], ': ', trained[int(res[index][0])], surface[int(res[index][1])]
         print >>f, 'Naive Bayes'
         res1 = nb1.predict(test1X)
         res2 = nb2.predict(test1X)
         res = zip(res1,res2)
         for index, label in enumerate(test1L):
-            print >>f, runners[label], ': ', trained[res[index][0]],
-            surface[res[index][1]]
+            print >>f, runners[label], ': ', trained[int(res[index][0])], surface[int(res[index][1])]
         print >>f, 'Decision Tree'
         res = dt.predict(test2X)
         for index, label in enumerate(test2L):
-            print >>f, runners[label], ': ', trained[res[index][0]],
-            surface[res[index][1]]
+            print >>f, runners[label], ': ', trained[int(res[index][0])], surface[int(res[index][1])]
         print >>f, 'SVM'
         res1 = sv1.predict(test2X)
         res2 = sv2.predict(test2X)
         res = zip(res1,res2)
         for index, label in enumerate(test2L):
-            print >>f, runners[label], ': ', trained[res[index][0]],
-            surface[res[index][1]]
+            print >>f, runners[label], ': ', trained[int(res[index][0])], surface[int(res[index][1])]
         print >>f, 'Naive Bayes'
         res1 = nb1.predict(test2X)
         res2 = nb2.predict(test2X)
         res = zip(res1,res2)
         for index, label in enumerate(test2L):
-            print >>f, runners[label], ': ', trained[res[index][0]],
-            surface[res[index][1]]
+            print >>f, runners[label], ': ', trained[int(res[index][0])], surface[int(res[index][1])]
         print >>f, 'Decision Tree'
         res = dt.predict(test3X)
         for index, label in enumerate(test3L):
-            print >>f, runners[label], ': ', trained[res[index][0]],
-            surface[res[index][1]]
+            print >>f, runners[label], ': ', trained[int(res[index][0])], surface[int(res[index][1])]
         print >>f, 'SVM'
         res1 = sv1.predict(test3X)
         res2 = sv2.predict(test3X)
         res = zip(res1,res2)
         for index, label in enumerate(test3L):
-            print >>f, runners[label], ': ', trained[res[index][0]],
-            surface[res[index][1]]
+            print >>f, runners[label], ': ', trained[int(res[index][0])], surface[int(res[index][1])]
         print >>f, 'Naive Bayes'
         res1 = nb1.predict(test3X)
         res2 = nb2.predict(test3X)
         res = zip(res1,res2)
         for index, label in enumerate(test3L):
-            print >>f, runners[label], ': ', trained[res[index][0]],
-            surface[res[index][1]]
+            print >>f, runners[label], ': ', trained[int(res[index][0])], surface[int(res[index][1])]
