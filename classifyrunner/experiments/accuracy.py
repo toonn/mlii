@@ -36,7 +36,7 @@ for X, Y, labels in zip(Xs, Ys, Ls):
     scores = cross_val_score(dt, X, Y[1], cv=lolo)
     print 'Decision Tree Accuracy, surface: {mean}% (+/- {std}%)'.format(
             mean=round(100*scores.mean(),1), std=round(100*scores.std(),1))
-    sv = svm.SVC(kernel='rbf', C=1)
+    sv = svm.SVC(kernel='linear', C=1)
     scores = cross_val_score(sv, X, Y[0], cv=lolo)
     print 'SVM Accuracy, trained: {mean}% (+/- {std}%)'.format(
             mean=round(100*scores.mean(),1), std=round(100*scores.std(),1))
