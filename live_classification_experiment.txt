@@ -1,0 +1,72 @@
+Decision Tree
+Nina 1:  n Track
+Nina 1:  n Asphalt
+Nina 1:  n Asphalt
+Nina 1:  n Woodchip
+Nina 1:  n Woodchip
+Nina 1:  n Woodchip
+Nina 1:  y Asphalt
+SVM
+Nina 1:  y Asphalt
+Nina 1:  n Asphalt
+Nina 1:  n Asphalt
+Nina 1:  n Asphalt
+Nina 1:  n Woodchip
+Nina 1:  n Woodchip
+Nina 1:  n Asphalt
+Naive Bayes
+Nina 1:  n Woodchip
+Nina 1:  n Asphalt
+Nina 1:  n Woodchip
+Nina 1:  n Asphalt
+Nina 1:  n Woodchip
+Nina 1:  n Asphalt
+Nina 1:  n Asphalt
+Decision Tree
+Nina 2:  n Woodchip
+Nina 2:  y Track
+Nina 2:  y Woodchip
+Nina 2:  y Woodchip
+Nina 2:  y Woodchip
+Nina 2:  n Track
+Nina 2:  n Track
+SVM
+Nina 2:  n Woodchip
+Nina 2:  n Woodchip
+Nina 2:  y Woodchip
+Nina 2:  n Woodchip
+Nina 2:  n Woodchip
+Nina 2:  n Woodchip
+Nina 2:  n Woodchip
+Naive Bayes
+Nina 2:  n Asphalt
+Nina 2:  n Woodchip
+Nina 2:  n Asphalt
+Nina 2:  n Asphalt
+Nina 2:  n Woodchip
+Nina 2:  n Woodchip
+Nina 2:  n Asphalt
+Decision Tree
+Nina 3:  n Asphalt
+Nina 3:  n Asphalt
+Nina 3:  n Asphalt
+Nina 3:  n Asphalt
+Nina 3:  y Track
+Nina 3:  y Track
+Nina 3:  n Track
+SVM
+Nina 3:  n Asphalt
+Nina 3:  n Woodchip
+Nina 3:  n Asphalt
+Nina 3:  n Woodchip
+Nina 3:  n Asphalt
+Nina 3:  y Asphalt
+Nina 3:  n Asphalt
+Naive Bayes
+Nina 3:  n Asphalt
+Nina 3:  n Asphalt
+Nina 3:  n Asphalt
+Nina 3:  n Woodchip
+Nina 3:  n Asphalt
+Nina 3:  n Track
+Nina 3:  n Asphalt
