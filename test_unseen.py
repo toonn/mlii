@@ -40,7 +40,7 @@ print 'Loading data...'
 if use_gurkin:
     try:
         print 'Found gurkin'
-        with open('dataset_dictionary.gurkin') as ddg:
+        with open('dataset_dictionary.gurkin','r') as ddg:
             d = pickled.load(ddg)
     except IOError:
         print 'Could not find gurkin...'
