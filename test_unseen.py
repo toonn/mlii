@@ -6,6 +6,9 @@ from sklearn import svm
 from sklearn import naive_bayes
 from sklearn import preprocessing
 
+import cPickle as pickled
+use_gurkin = True
+
 trained = ['n', 'y']
 surface = ['Woodchip', 'Asphalt', 'Track']
 
@@ -34,7 +37,20 @@ testdir = sys.argv[1]
 m = dataset.load_classes('data/metadata.csv')
 
 print 'Loading data...'
-d = dataset.load_data('data/Runs')
+if use_gurkin:
+    try:
+        print 'Found gurkin'
+        with open('dataset_dictionary.gurkin') as ddg:
+            d = pickled.load(ddg)
+    except IOError:
+        print 'Could not find gurkin...'
+        d = dataset.load_data('data/Runs')
+        with open('dataset_dictionary.gurkin','w') as ddg:
+            pickled.dump(d, ddg)
+        print 'Pickled a new gurkin'
+else:
+    print "I don't like gurkins..."
+    d = dataset.load_data('data/Runs')
 
 print 'Scaling data...'
 Xs, Ys, Ls = dataset.load_scaled_anklehip(d,m)
