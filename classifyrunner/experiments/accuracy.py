@@ -7,10 +7,26 @@ from sklearn import naive_bayes
 from sklearn.cross_validation import cross_val_score
 from sklearn.cross_validation import LeaveOneLabelOut
 
+import cPickle as pickled
+use_gurkin = True
+
 m = dataset.load_classes('data/metadata.csv')
 
 print 'Loading data...'
-d = dataset.load_data('data/Runs')
+if use_gurkin:
+    try:
+        print 'Found gurkin'
+        with open('dataset_dictionary.gurkin','r') as ddg:
+            d = pickled.load(ddg)
+    except IOError:
+        print 'Could not find gurkin...'
+        d = dataset.load_data('data/Runs')
+        with open('dataset_dictionary.gurkin','w') as ddg:
+            pickled.dump(d, ddg)
+        print 'Pickled a new gurkin'
+else:
+    print "I don't like gurkins..."
+    d = dataset.load_data('data/Runs')
 
 print 'Scaling data...'
 Xs, Ys, Ls = dataset.load_scaled_anklehip(d,m)
