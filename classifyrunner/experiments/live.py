@@ -7,6 +7,9 @@ from sklearn import naive_bayes
 from sklearn.cross_validation import cross_val_score
 from sklearn.cross_validation import LeaveOneLabelOut
 
+import cPickle as pickled
+use_gurkin = True
+
 runners = ['Ann', 'Annick', 'Emmy', 'Floor', 'Hanne',
             'Jolien', 'Laura', 'Mara', 'Nina', 'Sofie',
             'Tina', 'Tinne', 'Vreni', 'Yllia']
@@ -17,7 +20,23 @@ m = dataset.load_classes('data/metadata.csv')
 
 print 'Loading data...'
 nb_windows = 7
-d = dataset.load_data('data/Runs', nb_windows=nb_windows, window_shift=128)
+if use_gurkin:
+    try:
+        print 'Found gurkin'
+        with open('live_time_saver.gurkin','r') as ddg:
+            d = pickled.load(ddg)
+    except IOError:
+        print 'Could not find gurkin...'
+        d = dataset.load_data('data/Runs', nb_windows=nb_windows,
+                                window_shift=128)
+        with open('live_time_saver.gurkin','w') as ddg:
+            pickled.dump(d, ddg)
+        print 'Pickled a new gurkin'
+else:
+    print "I don't like gurkins..."
+    d = dataset.load_data('data/Runs', nb_windows=nb_windows,
+                            window_shift=128)
+        
 
 print 'Scaling data...'
 Xs, Ys, Ls = dataset.load_scaled_anklehip(d,m)
